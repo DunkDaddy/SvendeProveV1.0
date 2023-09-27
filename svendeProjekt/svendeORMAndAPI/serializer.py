@@ -30,3 +30,15 @@ class BillederSerializer(serializers.ModelSerializer):
     class Meta:
         model = Billeder
         fields = '__all__'
+
+
+class PasswordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bruger
+        fields = ('brugernavn', 'password')
+
+
+class BrugernavnSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bruger
+        fields = ('brugernavn',)

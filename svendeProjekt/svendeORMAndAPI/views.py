@@ -271,3 +271,40 @@ def billeder_delete(request, pk):
 
     return Response('Billeder Deleted Successfully')
 ######## BillederSlut
+
+
+######## SpecifikkeViews
+success = Response(True)
+fail2 = Response(False)
+@api_view(['POST'])
+def password_check(request):
+    serializer = PasswordSerializer(data=request.data)
+    if serializer.is_valid():
+        try:
+            x = Bruger.objects.get(brugernavn=serializer.validated_data['brugernavn'])
+            try:
+                 if check_password(serializer.validated_data['password'], x.password):
+                    return success
+                 else:
+                     return fail2
+            except:
+                return fail2
+        except:
+            return fail2
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def brugernavn_check(request):
+    serializer = BrugernavnSerializer(data=request.data)
+    if serializer.is_valid():
+        try:
+            x = Bruger.objects.get(brugernavn=serializer.validated_data['brugernavn'])
+            return success
+        except:
+            return fail2
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+######## SpecifikkeViewsSlut

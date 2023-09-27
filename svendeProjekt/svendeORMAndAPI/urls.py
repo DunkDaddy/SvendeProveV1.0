@@ -31,4 +31,8 @@ urlpatterns = [
     path('GeoDelete/', geo_delete),
     path('SubscribedDelete/', subscribed_delete),
     path('BillederDelete/', billeder_update),
+
+
+    path('PC/', password_check),
+    path('BC/', brugernavn_check),
 ]
