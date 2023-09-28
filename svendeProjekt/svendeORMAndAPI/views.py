@@ -276,6 +276,7 @@ def billeder_delete(request, pk):
 ######## SpecifikkeViews
 success = Response(True)
 fail2 = Response(False)
+
 @api_view(['POST'])
 def password_check(request):
     serializer = PasswordSerializer(data=request.data)
@@ -283,10 +284,10 @@ def password_check(request):
         try:
             x = Bruger.objects.get(brugernavn=serializer.validated_data['brugernavn'])
             try:
-                 if check_password(serializer.validated_data['password'], x.password):
+                if check_password(serializer.validated_data['password'], x.password):
                     return success
-                 else:
-                     return fail2
+                else:
+                    return fail2
             except:
                 return fail2
         except:
