@@ -3,18 +3,26 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http import JsonResponse
 from .forms import LoginForm, RegistreringsForm
+from svendeORMAndAPI.models import *
 import requests
 
 # Create your views here.
 headers = {'Content-Type': 'application/json', 'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate, br', 'Authorization': 'Token 86839eb173ab3783f76b3a431e6c1a3ce9f47029'}
 
+bruger = ''
 def base(response):
     login = LoginForm
     registrering = RegistreringsForm
     return render(response, 'base.html', {"login": login, "registrering": registrering})
 
 
-def homepage(response):
+def home(response):
+    billeder = Billeder.objects.all()
+    kategorier = Kategori.objects.all()
+    return render(response, 'Homepage.html', {'bruger': bruger, 'billeder': billeder, 'kategorier': kategorier})
+
+
+def startpage(response):
     if response.method == "POST":
         registrering = RegistreringsForm(response.POST)
         if registrering.is_valid():
@@ -40,8 +48,6 @@ def homepage(response):
                 registrering = RegistreringsForm
                 return render(response, 'base.html', {"login": login, "registrering": registrering, 'fail': 'Brugernavn eksitere allerede'})
 
-
-
         login = LoginForm(response.POST)
         if login.is_valid():
             brugernavn = login.cleaned_data['brugernavn']
@@ -51,11 +57,12 @@ def homepage(response):
             request = requests.post(url, data=json.dumps(data), headers=headers)
             response_json = request.json()
             if response_json:
-                return render(response, 'homepage.html')
+                global bruger
+                bruger = Bruger.objects.get(brugernavn=brugernavn)
+                return home(response)
             else:
-                login = LoginForm(response)
+                login = LoginForm
                 registrering = RegistreringsForm
-                return render(response, 'base.html',
-                              {"login": login, "registrering": registrering, "fail": 'Forkert Brugernavn eller Password'})
+                return render(response, 'base.html',{"login": login, "registrering": registrering, "fail": 'Forkert Brugernavn eller Password'})
     else:
         return base(response)

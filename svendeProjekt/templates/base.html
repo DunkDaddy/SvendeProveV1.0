@@ -33,13 +33,30 @@ html,body {
                 <button type="submit" class="btn btn-primary">Login</button>
             </form>
             <h3>Or Sign up for free today</h3>
-            <form method="post" action="">
-                {% csrf_token %}
-                {{registrering.as_p}}
-                <button type="submit" class="btn btn-primary">Sign Up</button>
-            </form>
+
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#RegistreringsModal">Registrer</button>
+
+           <div class="modal fade" id="RegistreringsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+               <div class="modal-dialog">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <h5 class="modal-title" id="exampleModalLabel">Registrering</h5>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                       </div>
+                       <div class="modal-body">
+                           <form method="post">
+                               {% csrf_token %}
+                               {{registrering.as_p}}
+                               <div class="modal-footer">
+                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                   <button type="submit" class="btn btn-primary">Opret Bruger</button>
+                               </div>
+                           </form>
+                       </div>
+                   </div>
+               </div>
+           </div>
         </div>
     </div>
-</div>
 </body>
 </html>
