@@ -12,6 +12,18 @@ class RegistreringsForm(ModelForm):
         }
 
 
+class EmailForm(ModelForm):
+    class Meta:
+        model = Bruger
+        fields = ('email',)
+
+
+class PasswordForm(ModelForm):
+    class Meta:
+        model = Bruger
+        fields = ('password',)
+
+
 class LoginForm(ModelForm):
     class Meta:
         model = Bruger

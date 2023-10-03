@@ -14,6 +14,11 @@
             max-width:900px;
             max-height:900px;
         }
+
+        .kategoriwrapper{
+        display: inline-block;
+        margin-right: 93%;
+    }
     </style>
     <meta charset="UTF-8">
     <title>HjemmesideNavnHer</title>
@@ -22,12 +27,12 @@
 
 </head>
 <body class="darkened-image">
-<form class="list-group sticky-sm-top" method="POST" action="">
+<form class="list-group sticky-sm-top kategoriwrapper" method="POST" action="">
     {% csrf_token %}
     <div class="list-group sticky-sm-top">
-        <button style=" width: 7%;" type="submit" name="id" value="0" class="list-group-item list-group-item-action">Alle</button>
+        <button type="submit" name="id" value="0" class="list-group-item list-group-item-action">Alle</button>
         {% for kategori in kategorier %}
-        <button style=" width: 7%;" type="submit" name="id" value="{{kategori.id}}" class="list-group-item list-group-item-action">{{kategori.navn}}</button>
+        <button type="submit" name="id" value="{{kategori.id}}" class="list-group-item list-group-item-action">{{kategori.navn}}</button>
         {% endfor %}
     </div>
 </form>
@@ -65,6 +70,75 @@
     </div>
         {% endif %}
     {% endfor %}
+</div>
+
+
+<button type="button" class="btn btn-primary position-absolute top-0 end-0" data-bs-toggle="modal" data-bs-target="#RegistreringsModal">Profil</button>
+
+<div class="modal fade" id="RegistreringsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Registrering</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>Navn: {{bruger.navn}}</h5>
+                <h5>Brugernavn: {{bruger.brugernavn}}</h5>
+                <h5>Email: {{bruger.email}}</h5>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Luk</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PModal">Ændre Kodeord</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#EModal">Ændre Email</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="PModal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">Ændre Kodeord</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{password.as_p}}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">luk</button>
+                        <button type="submit" class="btn btn-primary">Gem Kodeord</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="EModal" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel3">Ændre Kodeord</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{email.as_p}}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">luk</button>
+                        <button type="submit" class="btn btn-primary">Gem Email</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 

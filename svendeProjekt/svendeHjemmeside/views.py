@@ -2,7 +2,7 @@ import json
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http import JsonResponse
-from .forms import LoginForm, RegistreringsForm
+from .forms import LoginForm, RegistreringsForm, PasswordForm, EmailForm
 from svendeORMAndAPI.models import *
 import requests
 
@@ -10,16 +10,22 @@ import requests
 headers = {'Content-Type': 'application/json', 'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate, br', 'Authorization': 'Token 86839eb173ab3783f76b3a431e6c1a3ce9f47029'}
 
 bruger = ''
+x = 0
+global fail
+
+
 def base(response):
     login = LoginForm
     registrering = RegistreringsForm
-    return render(response, 'base.html', {"login": login, "registrering": registrering})
+    return render(response, 'base.html', {"login": login, "registrering": registrering, 'fail': fail})
 
 
 def home(response):
+    p = PasswordForm
+    e = EmailForm
     billeder = Billeder.objects.all()
     kategorier = Kategori.objects.all()
-    return render(response, 'Homepage.html', {'bruger': bruger, 'billeder': billeder, 'kategorier': kategorier, 'valgtKategori': 0})
+    return render(response, 'Homepage.html', {'bruger': bruger, 'billeder': billeder, 'kategorier': kategorier, 'valgtKategori': x, 'email': e, 'password': p})
 
 
 def startpage(response):
@@ -46,6 +52,7 @@ def startpage(response):
             else:
                 login = LoginForm
                 registrering = RegistreringsForm
+                fail = 'Brugernavn eksitere allerede'
                 return render(response, 'base.html', {"login": login, "registrering": registrering, 'fail': 'Brugernavn eksitere allerede'})
 
         login = LoginForm(response.POST)
@@ -61,17 +68,24 @@ def startpage(response):
                 bruger = Bruger.objects.get(brugernavn=brugernavn)
                 return home(response)
             else:
-                login = LoginForm
-                registrering = RegistreringsForm
-                return render(response, 'base.html',{"login": login, "registrering": registrering, "fail": 'Forkert Brugernavn eller Password'})
+                return base(response)
+
+        password = PasswordForm(response.POST)
+        if password.is_valid():
+            pass
+
+        email = EmailForm(response.POST)
+        if email.is_valid():
+            bruger.email = email.cleaned_data['email']
+            bruger.save()
+            return home(response)
 
         if response.method == "POST":
             try:
+                global x
                 x = response.POST['id']
                 x = int(x)
-                billeder = Billeder.objects.all()
-                kategorier = Kategori.objects.all()
-                return render(response, 'Homepage.html',{'bruger': bruger, 'billeder': billeder, 'kategorier': kategorier, 'valgtKategori': x})
+                return home(response)
             except:
                 return home(response)
 
