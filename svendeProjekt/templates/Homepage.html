@@ -27,6 +27,8 @@
 
 </head>
 <body class="darkened-image">
+
+
 <form class="list-group sticky-sm-top kategoriwrapper" method="POST" action="">
     {% csrf_token %}
     <div class="list-group sticky-sm-top">
@@ -45,10 +47,15 @@
     <div class="col">
     </div>
     <div class="col">
-
         <img id="pageimg" src={{billedet.billedet}}>
         <h4 style="background-color:#ffffff; padding: 0.5em;">{{billedet.beskrivelse}}</h4>
         <h5>Kategori: {{billedet.kategori_id.navn}}</h5>
+            {% if bruger.id == billedet.upload_id.id %}
+            <form method="POST" action="">
+                {% csrf_token %}
+                <button type="submit" name="billed" value="{{billedet.id}}" class="btn btn-danger">Slet</button>
+            </form>
+            {% endif %}
         <br>
     </div>
       <div class="col">
@@ -59,10 +66,15 @@
         <div class="col">
     </div>
         <div class="col">
-
         <img id="pageimg" src={{billedet.billedet}}>
         <h4 style="background-color:#ffffff; padding: 0.5em;">{{billedet.beskrivelse}}</h4>
         <h5>Kategori: {{billedet.kategori_id.navn}}</h5>
+            {% if bruger.id == billedet.upload_id.id %}
+            <form method="POST" action="">
+                {% csrf_token %}
+                <button type="submit" name="billed" value="{{billedet.id}}" class="btn btn-danger">Slet</button>
+            </form>
+            {% endif %}
         <br>
         </div>
         <div class="col">
@@ -79,7 +91,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Registrering</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Profil</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -124,7 +136,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel3">Ændre Kodeord</h5>
+                <h5 class="modal-title" id="exampleModalLabel3">Ændre Email</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

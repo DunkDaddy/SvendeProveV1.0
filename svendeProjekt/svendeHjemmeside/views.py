@@ -1,7 +1,6 @@
 import json
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.http import JsonResponse
+from django.contrib.auth.hashers import make_password
 from .forms import LoginForm, RegistreringsForm, PasswordForm, EmailForm
 from svendeORMAndAPI.models import *
 import requests
@@ -11,7 +10,7 @@ headers = {'Content-Type': 'application/json', 'Accept': '*/*', 'Accept-Encoding
 
 bruger = ''
 x = 0
-global fail
+fail = ''
 
 
 def base(response):
@@ -52,8 +51,9 @@ def startpage(response):
             else:
                 login = LoginForm
                 registrering = RegistreringsForm
+                global fail
                 fail = 'Brugernavn eksitere allerede'
-                return render(response, 'base.html', {"login": login, "registrering": registrering, 'fail': 'Brugernavn eksitere allerede'})
+                return base(response)
 
         login = LoginForm(response.POST)
         if login.is_valid():
@@ -68,11 +68,14 @@ def startpage(response):
                 bruger = Bruger.objects.get(brugernavn=brugernavn)
                 return home(response)
             else:
+                fail = 'Forkert Brugernavn eller Password'
                 return base(response)
 
         password = PasswordForm(response.POST)
         if password.is_valid():
-            pass
+            bruger.password = make_password(password.cleaned_data['password'])
+            bruger.save()
+            return home(response)
 
         email = EmailForm(response.POST)
         if email.is_valid():
@@ -81,13 +84,18 @@ def startpage(response):
             return home(response)
 
         if response.method == "POST":
-            try:
-                global x
-                x = response.POST['id']
-                x = int(x)
-                return home(response)
-            except:
-                return home(response)
+                try:
+                    global x
+                    x = response.POST['id']
+                    x = int(x)
+                    return home(response)
+                finally:
+                    try:
+                        billedet = Billeder.objects.get(id=int(response.POST['billed']))
+                        billedet.delete()
+                        return home(response)
+                    except:
+                        return home(response)
 
     else:
         return base(response)
