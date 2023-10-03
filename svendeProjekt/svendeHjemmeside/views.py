@@ -19,7 +19,7 @@ def base(response):
 def home(response):
     billeder = Billeder.objects.all()
     kategorier = Kategori.objects.all()
-    return render(response, 'Homepage.html', {'bruger': bruger, 'billeder': billeder, 'kategorier': kategorier})
+    return render(response, 'Homepage.html', {'bruger': bruger, 'billeder': billeder, 'kategorier': kategorier, 'valgtKategori': 0})
 
 
 def startpage(response):
@@ -64,5 +64,16 @@ def startpage(response):
                 login = LoginForm
                 registrering = RegistreringsForm
                 return render(response, 'base.html',{"login": login, "registrering": registrering, "fail": 'Forkert Brugernavn eller Password'})
+
+        if response.method == "POST":
+            try:
+                x = response.POST['id']
+                x = int(x)
+                billeder = Billeder.objects.all()
+                kategorier = Kategori.objects.all()
+                return render(response, 'Homepage.html',{'bruger': bruger, 'billeder': billeder, 'kategorier': kategorier, 'valgtKategori': x})
+            except:
+                return home(response)
+
     else:
         return base(response)
