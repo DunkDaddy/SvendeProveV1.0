@@ -36,6 +36,7 @@
         {% for kategori in kategorier %}
         <button type="submit" name="id" value="{{kategori.id}}" class="list-group-item list-group-item-action">{{kategori.navn}}</button>
         {% endfor %}
+        <button type="button" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#KModal">subscribe</button>
     </div>
 </form>
 
@@ -56,6 +57,7 @@
                 <button type="submit" name="billed" value="{{billedet.id}}" class="btn btn-danger">Slet</button>
             </form>
             {% endif %}
+            <button type="submit" name="reportbilled" value="{{billedet.id}}" class="btn btn-danger">Rappoter</button>
         <br>
     </div>
       <div class="col">
@@ -75,6 +77,10 @@
                 <button type="submit" name="billed" value="{{billedet.id}}" class="btn btn-danger">Slet</button>
             </form>
             {% endif %}
+            <form  method="POST" action="">
+                {% csrf_token %}
+                <button type="submit" name="reportbilled" value="{{billedet.id}}" class="btn btn-danger">Rappoter</button>
+            </form>
         <br>
         </div>
         <div class="col">
@@ -153,6 +159,33 @@
     </div>
 </div>
 
+
+
+<div class="modal fade" id="KModal" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel4">vælg kategori</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <select id="kategoriselect" name="kategori" class="kategori-dropdown">
+                        {% for kategori in kategorier %}
+                        <option value="{{kategori.id}}">{{kategori.navn}}</option>
+                        {% endfor %}
+                    </select>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">luk</button>
+                        <button type="submit" class="btn btn-primary">Gem valg</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

@@ -39,3 +39,13 @@ class Billeder(models.Model):
 
     def __str__(self):
         return self.titel
+
+
+class Rapport(models.Model):
+    beskrivelse = models.TextField(default="Bruger er utilfreds med billedet")
+    billed_id = models.ForeignKey(Billeder, on_delete=models.CASCADE)
+    snitch_id = models.ForeignKey(Bruger,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.snitch_id.navn + " har rappoteret et billed fra: " + self.billed_id.upload_id.navn
+

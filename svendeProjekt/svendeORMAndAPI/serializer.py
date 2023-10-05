@@ -42,3 +42,10 @@ class BrugernavnSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bruger
         fields = ('brugernavn',)
+
+
+class RapportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rapport
+        fields = '__all__'
+

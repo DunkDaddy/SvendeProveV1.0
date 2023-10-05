@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import *
 from .serializer import *
@@ -273,6 +273,21 @@ def billeder_delete(request, pk):
 ######## BillederSlut
 
 
+
+######## Rapport
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def rapport_create(request):
+    serializer = RapportSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+######## RapportSlut
+
+
+
 ######## SpecifikkeViews
 success = Response(True)
 fail2 = Response(False)
@@ -307,5 +322,6 @@ def brugernavn_check(request):
             return fail2
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 ######## SpecifikkeViewsSlut

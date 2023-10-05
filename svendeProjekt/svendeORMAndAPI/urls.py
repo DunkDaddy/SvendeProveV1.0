@@ -13,6 +13,7 @@ urlpatterns = [
     path('GeoCreate/', geo_create),
     path('SubscribedCreate/', subscribed_create),
     path('BillederCreate/', billeder_create),
+    path('R/', rapport_create),
 
     path('Bruger/<int:pk>/', bruger_view),
     path('Kategori/<int:pk>/', kategori_view),
@@ -26,11 +27,11 @@ urlpatterns = [
     path('SubscribedUpdate/', subscribed_update),
     path('BillederUpdate/', billeder_update),
 
-    path('BrugerDelete/', bruger_delete),
-    path('KategoriDelete/', kategori_delete),
-    path('GeoDelete/', geo_delete),
-    path('SubscribedDelete/', subscribed_delete),
-    path('BillederDelete/', billeder_update),
+    path('BrugerDelete/<int:pk>/', bruger_delete),
+    path('KategoriDelete/<int:pk>/', kategori_delete),
+    path('GeoDelete/<int:pk>/', geo_delete),
+    path('SubscribedDelete/<int:pk>/', subscribed_delete),
+    path('BillederDelete/<int:pk>/', billeder_update),
 
 
     path('PC/', password_check),

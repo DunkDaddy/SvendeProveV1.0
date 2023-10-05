@@ -22,13 +22,15 @@ def base(response):
 def home(response):
     p = PasswordForm
     e = EmailForm
+    subscribecheck = Subscribed_kategori.objects.all()
     billeder = Billeder.objects.all()
     kategorier = Kategori.objects.all()
-    return render(response, 'Homepage.html', {'bruger': bruger, 'billeder': billeder, 'kategorier': kategorier, 'valgtKategori': x, 'email': e, 'password': p})
+    return render(response, 'Homepage.html', {'bruger': bruger, 'billeder': billeder, 'kategorier': kategorier, 'valgtKategori': x, 'email': e, 'password': p,'check': subscribecheck})
 
 
 def startpage(response):
     if response.method == "POST":
+        print(response.POST)
         registrering = RegistreringsForm(response.POST)
         if registrering.is_valid():
             brugernavn = registrering.cleaned_data['brugernavn']
@@ -82,6 +84,31 @@ def startpage(response):
             bruger.email = email.cleaned_data['email']
             bruger.save()
             return home(response)
+
+
+
+        try:
+            response.method == "POST" and response.POST['reportbilled']
+            billed = int(response.POST['reportbilled'])
+            snitch = int(bruger.pk)
+            data = {'billed_id': f'{billed}', 'snitch_id': f'{snitch}'}
+            url = 'http://127.0.0.1:8000/data/R/'
+            request = requests.post(url, data=json.dumps(data), headers=headers)
+            return home(response)
+        except:
+            pass
+
+
+        try:
+            response.method == "POST" and response.POST['kategori']
+            kategoriid = int(response.POST['kategori'])
+            brugerid = int(bruger.pk)
+            data = {'bruger_id': f'{brugerid}', 'kategori_id': f'{kategoriid}'}
+            url = 'http://127.0.0.1:8000/data/SubscribedCreate/'
+            request = requests.post(url, data=json.dumps(data), headers=headers)
+            return home(response)
+        except:
+            pass
 
         if response.method == "POST":
                 try:

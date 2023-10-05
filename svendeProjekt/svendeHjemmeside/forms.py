@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django import forms
 from svendeORMAndAPI.models import *
+from django.forms import formset_factory
 
 
 class RegistreringsForm(ModelForm):
@@ -31,3 +32,16 @@ class LoginForm(ModelForm):
         widgets = {
             'password': forms.PasswordInput(),
         }
+
+
+class KategoriForm(ModelForm):
+    class Meta:
+        model = Kategori
+        fields = ('navn',)
+
+
+class RapportForm(ModelForm):
+    class Meta:
+        model = Rapport
+        fields = ('beskrivelse',)
+
