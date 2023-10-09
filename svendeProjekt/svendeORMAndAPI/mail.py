@@ -28,7 +28,8 @@ subscribed_request = requests.get(subscribed_url, headers=headers)
 bruger_list = bruger_request.json()
 billed_list = billed_request.json()
 subscription_list = subscribed_request.json()
-
+person = {'id': 0}
+print(person['id'])
 for subscription in subscription_list:
     for bruger in bruger_list:
         if subscription['bruger_id'] == bruger['id']:
@@ -36,16 +37,19 @@ for subscription in subscription_list:
             for billed in billed_list:
                 if billed['kategori_id'] == subscription['kategori_id']:
                     billednavn = billed['billedet']
-
-                    with open(f'C:/Users/HFGF/Documents/GitHub/SvendeProveV1.0/svendeProjekt{billednavn}', 'rb') as f:
-                        image_part = MIMEImage(f.read())
-                    message = MIMEMultipart()
-                    message['Subject'] = subject
-                    message['From'] = sender_email
-                    message['To'] = recipient_email
-                    html_part = MIMEText(body)
-                    message.attach(html_part)
-                    message.attach(image_part)
-                    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-                        server.login(sender_email, sender_password)
-                        server.sendmail(sender_email, recipient_email, message.as_string())
+                    if person['id'] == bruger['id']:
+                        pass
+                    else:
+                        with open(f'C:/Users/HFGF/Documents/GitHub/SvendeProveV1.0/svendeProjekt{billednavn}', 'rb') as f:
+                            image_part = MIMEImage(f.read())
+                        message = MIMEMultipart()
+                        message['Subject'] = subject
+                        message['From'] = sender_email
+                        message['To'] = recipient_email
+                        html_part = MIMEText(body)
+                        message.attach(html_part)
+                        message.attach(image_part)
+                        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+                            server.login(sender_email, sender_password)
+                            server.sendmail(sender_email, recipient_email, message.as_string())
+                        person = bruger
