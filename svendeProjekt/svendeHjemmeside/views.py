@@ -13,10 +13,15 @@ x = 0
 fail = ''
 
 
+
+def logout(response):
+    bruger = ''
+    fail = ''
+    return render(response, 'logout.html')
 def base(response):
     login = LoginForm
     registrering = RegistreringsForm
-    return render(response, 'base.html', {"login": login, "registrering": registrering, 'fail': fail})
+    return render(response, 'base.html', {"login": login, "registrering": registrering, 'fail': fail, 'bruger': bruger})
 
 
 def home(response):
@@ -29,6 +34,10 @@ def home(response):
 
 
 def startpage(response):
+    global bruger
+    if response.method == "GET" and bruger != '':
+        return home(response)
+
     if response.method == "POST":
         print(response.POST)
         registrering = RegistreringsForm(response.POST)
@@ -66,7 +75,6 @@ def startpage(response):
             request = requests.post(url, data=json.dumps(data), headers=headers)
             response_json = request.json()
             if response_json:
-                global bruger
                 bruger = Bruger.objects.get(brugernavn=brugernavn)
                 return home(response)
             else:
@@ -126,3 +134,5 @@ def startpage(response):
 
     else:
         return base(response)
+
+

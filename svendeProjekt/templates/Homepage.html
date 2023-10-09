@@ -19,6 +19,7 @@
         display: inline-block;
         margin-right: 93%;
     }
+
     </style>
     <meta charset="UTF-8">
     <title>HjemmesideNavnHer</title>
@@ -40,8 +41,13 @@
     </div>
 </form>
 
-
 <div class="container">
+
+    <div class="btn-group-vertical sticky-sm-top buttongroup" role="group">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#RegistreringsModal">Profil</button>
+        <a href=""><button type="button" class="btn btn-primary">Log Out</button></a>
+    </div>
+
     {% for billedet in billeder %}
         {% if billedet.kategori_id.id == valgtKategori %}
   <div class="row">
@@ -90,8 +96,6 @@
     {% endfor %}
 </div>
 
-
-<button type="button" class="btn btn-primary position-absolute top-0 end-0" data-bs-toggle="modal" data-bs-target="#RegistreringsModal">Profil</button>
 
 <div class="modal fade" id="RegistreringsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
