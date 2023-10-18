@@ -15,6 +15,7 @@ fail = ''
 
 
 def logout(response):
+    global bruger
     bruger = ''
     fail = ''
     return render(response, 'logout.html')
@@ -56,7 +57,9 @@ def startpage(response):
                 request = requests.post(url, data=json.dumps(data), headers=headers)
                 response_json = request.json()
                 if response_json:
-                    return base(response)
+                    print(response_json)
+                    bruger = Bruger.objects.get(brugernavn=brugernavn)
+                    return home(response)
                 else:
                     return base(response)
             else:
